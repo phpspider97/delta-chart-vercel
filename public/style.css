@@ -1,0 +1,424 @@
+* {
+  box-sizing: border-box;
+}
+
+
+body {
+  margin: 0;
+
+  background: #0b1117;
+
+  color: #e6edf3;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+
+/* =========================================================
+   TOPBAR
+========================================================= */
+
+.topbar {
+  position: sticky;
+
+  top: 0;
+
+  z-index: 100;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 20px;
+
+  padding: 12px 16px;
+
+  background: #111923;
+
+  border-bottom:
+    1px solid #263241;
+}
+
+
+.title-section {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 220px;
+}
+
+
+.title-section h1 {
+  margin: 0;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+
+.status {
+  padding: 5px 9px;
+
+  border-radius: 6px;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+}
+
+
+.status.connected {
+  background: #123c2b;
+
+  color: #4ade80;
+}
+
+
+.status.disconnected {
+  background: #3b1b1b;
+
+  color: #f87171;
+}
+
+
+/* =========================================================
+   CONTROLS
+========================================================= */
+
+.controls {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+  justify-content: flex-end;
+}
+
+
+.controls input,
+.controls select,
+.controls button {
+  height: 34px;
+
+  border:
+    1px solid #303b47;
+
+  border-radius: 6px;
+
+  background: #18222d;
+
+  color: #e6edf3;
+
+  padding: 0 10px;
+
+  outline: none;
+}
+
+
+.controls input {
+  width: 210px;
+}
+
+
+.controls select {
+  min-width: 105px;
+
+  cursor: pointer;
+}
+
+
+.controls button {
+  cursor: pointer;
+
+  font-weight: 600;
+}
+
+
+.controls button:hover {
+  background: #22303d;
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.info-bar {
+  display: flex;
+
+  align-items: center;
+
+  gap: 20px;
+
+  padding: 8px 16px;
+
+  background: #0f1720;
+
+  border-bottom:
+    1px solid #202b37;
+
+  font-size: 12px;
+
+  color: #9da9b5;
+}
+
+
+.info-bar strong {
+  color: #e6edf3;
+}
+
+
+.buy-text {
+  color: #4ade80 !important;
+}
+
+
+.sell-text {
+  color: #f87171 !important;
+}
+
+
+/* =========================================================
+   SIGNAL INFO
+========================================================= */
+
+.signal-info {
+  display: flex;
+
+  gap: 25px;
+
+  padding: 7px 16px;
+
+  background: #0c141d;
+
+  border-bottom:
+    1px solid #202b37;
+
+  font-size: 11px;
+}
+
+
+.legend-buy {
+  color: #4ade80;
+}
+
+
+.legend-sell {
+  color: #f87171;
+}
+
+
+/* =========================================================
+   CHART GRID
+========================================================= */
+
+.charts-container {
+  --chart-columns: 4;
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      var(--chart-columns),
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  padding: 10px;
+}
+
+
+/* =========================================================
+   CARD
+========================================================= */
+
+.chart-card {
+  min-width: 0;
+
+  height: 350px;
+
+  overflow: hidden;
+
+  background: #111923;
+
+  border:
+    1px solid #263241;
+
+  border-radius: 7px;
+}
+
+
+.chart-header {
+  height: 45px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 0 10px;
+
+  background: #151f2a;
+
+  border-bottom:
+    1px solid #263241;
+}
+
+
+.chart-symbol-wrapper {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  min-width: 0;
+}
+
+
+.chart-symbol {
+  font-size: 13px;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+.chart-tags {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  font-size: 9px;
+
+  font-weight: 700;
+
+  color: #8ea0b2;
+
+  text-transform: uppercase;
+}
+
+
+.chart-price {
+  font-size: 11px;
+
+  font-weight: 600;
+
+  white-space: nowrap;
+
+  color: #cbd5df;
+}
+
+
+.chart {
+  width: 100%;
+
+  height: 305px;
+}
+
+
+/* =========================================================
+   EMPTY
+========================================================= */
+
+.empty-state {
+  padding: 50px;
+
+  text-align: center;
+
+  color: #7f8c99;
+}
+
+
+.hidden {
+  display: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .charts-container {
+    --chart-columns: 3;
+  }
+
+}
+
+
+@media (max-width: 800px) {
+
+  .topbar {
+    position: static;
+
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  .controls {
+    width: 100%;
+
+    justify-content: flex-start;
+  }
+
+
+  .controls input {
+    width: 100%;
+  }
+
+
+  .charts-container {
+    --chart-columns: 2;
+  }
+
+}
+
+
+@media (max-width: 550px) {
+
+  .charts-container {
+    --chart-columns: 1;
+  }
+
+
+  .info-bar {
+    flex-wrap: wrap;
+
+    gap: 8px 15px;
+  }
+
+
+  .signal-info {
+    flex-direction: column;
+
+    gap: 5px;
+  }
+
+}
