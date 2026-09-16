@@ -4,6 +4,12 @@ import { WebSocketServer, WebSocket } from "ws";
   
 const app = express();
 
+import path from "path";
+
+app.use(express.json());
+
+app.use(express.static(path.join(__dirname, "public")));
+
 const PORT = 3000;
 
 const DELTA_REST_URL = "https://api.india.delta.exchange";
