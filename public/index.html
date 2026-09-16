@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Delta Mark Price Dashboard
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+
+
+    <script src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"></script>
+
+</head>
+
+
+<body>
+
+
+<!-- ==========================================================
+     TOP BAR
+=========================================================== -->
+
+<header class="topbar">
+
+
+    <div class="topbar-left">
+
+
+        <div class="brand">
+
+
+            <div class="brand-icon">
+                D
+            </div>
+
+
+            <div>
+
+                <h1>
+                    Mark Price
+                </h1>
+
+                <span>
+                    Delta Exchange Market Dashboard
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="status">
+
+            <span
+                id="connectionDot"
+                class="status-dot offline"
+            ></span>
+
+            <span id="connectionText">
+                OFFLINE
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- ======================================================
+         TOP RIGHT
+    ======================================================= -->
+
+    <div class="topbar-right">
+
+
+        <!-- DISPLAY -->
+
+        <div class="top-control">
+
+
+            <label for="displayMode">
+                Display
+            </label>
+
+
+            <select id="displayMode">
+
+                <option
+                    value="selected"
+                    selected
+                >
+                    Selected
+                </option>
+
+
+                <option value="all">
+                    All Products
+                </option>
+
+            </select>
+
+
+        </div>
+
+
+
+        <!-- PRODUCTS -->
+
+        <div class="top-stat">
+
+            <span class="top-stat-label">
+                Products
+            </span>
+
+
+            <strong id="productCount">
+                0
+            </strong>
+
+        </div>
+
+
+
+        <!-- CHARTS -->
+
+        <div class="top-stat">
+
+            <span class="top-stat-label">
+                Charts
+            </span>
+
+
+            <strong id="visibleCount">
+                0
+            </strong>
+
+        </div>
+
+
+    </div>
+
+
+</header>
+
+
+
+<!-- ==========================================================
+     CONTROLS
+=========================================================== -->
+
+<section class="controls">
+
+
+    <!-- SEARCH -->
+
+    <div class="control-group search-group  timeframe-group">
+
+        <label for="searchInput">
+            Search
+        </label>
+
+
+        <div class="search-wrapper">
+
+            <span class="search-icon">
+                ⌕
+            </span>
+
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search symbol..."
+                autocomplete="off"
+            >
+
+        </div>
+
+    </div>
+
+
+
+    <!-- TAG -->
+
+    <div class="control-group">
+
+        <label for="tagFilter">
+            Tag
+        </label>
+
+
+        <select id="tagFilter">
+
+            <option value="all">
+                All Tags
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- CHART LIMIT -->
+
+    <div class="control-group">
+
+        <label for="chartLimit">
+            Charts
+        </label>
+
+
+        <select id="chartLimit">
+
+            <option
+                value="12"
+            >
+                12
+            </option>
+
+
+            <option value="24">
+                24
+            </option>
+
+
+            <option value="30">
+                30
+            </option>
+
+
+            <option value="60">
+                60
+            </option>
+
+
+            <option value="100">
+                100
+            </option>
+
+
+            <option value="all" selected>
+                All
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- COLUMNS -->
+
+    <div class="control-group">
+
+        <label for="columns">
+            Columns
+        </label>
+
+
+        <select id="columns">
+
+            <option value="1">
+                1
+            </option>
+
+
+            <option value="2">
+                2
+            </option>
+
+
+            <option value="3">
+                3
+            </option>
+
+
+            <option
+                value="4"
+                selected
+            >
+                4
+            </option>
+
+
+            <option value="5">
+                5
+            </option>
+
+
+            <option value="6">
+                6
+            </option>
+
+
+            <option value="8">
+                8
+            </option>
+
+
+            <option value="10">
+                10
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- TIMEFRAME -->
+
+    <div class="control-group">
+
+        <label for="timeframe">
+            Timeframe
+        </label>
+
+
+        <select id="timeframe">
+          <option
+          value="1m"
+        >
+          1m
+        </option>
+            <option
+                value="3m"
+            >
+                3m
+            </option>
+
+
+            <option value="30m">
+                30m
+            </option>
+
+
+            <option value="1h">
+                1h
+            </option>
+
+
+            <option value="4h">
+                4h
+            </option>
+
+
+            <option value="1d" selected>
+                1D
+            </option>
+
+        </select>
+
+    </div>
+
+
+
+    <!-- RELOAD -->
+
+    <div class="control-group reload-group">
+
+        <label>
+            &nbsp;
+        </label>
+
+
+        <button
+            id="reloadButton"
+            class="reload-button"
+            type="button"
+        >
+            ↻ Reload
+        </button>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ==========================================================
+     MARKET BAR
+=========================================================== -->
+
+<section class="market-bar">
+
+
+    <div class="market-title">
+
+        <span class="live-indicator"></span>
+
+        <span>
+            Live Mark Price
+        </span>
+
+    </div>
+
+
+
+    <div class="market-info">
+
+        <span>
+            Timeframe:
+        </span>
+
+
+        <strong id="currentTimeframe">
+            3m
+        </strong>
+
+
+        <span class="separator">
+            |
+        </span>
+
+
+        <span>
+            Last update:
+        </span>
+
+
+        <strong id="lastUpdate">
+            --
+        </strong>
+
+    </div>
+
+
+</section>
+
+
+
+<!-- ==========================================================
+     CHARTS
+=========================================================== -->
+
+<main
+    id="chartsContainer"
+    class="charts-container"
+></main>
+
+
+
+<!-- ==========================================================
+     LOADING
+=========================================================== -->
+
+<div
+    id="loading"
+    class="loading"
+>
+
+    <div class="loading-spinner"></div>
+
+    <span>
+        Loading market data...
+    </span>
+
+</div>
+
+
+
+<script src="/app.js"></script>
+
+
+</body>
+
+</html>
