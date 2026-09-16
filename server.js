@@ -5,9 +5,14 @@ import { WebSocketServer, WebSocket } from "ws";
 const app = express();
 
 import path from "path";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 app.use(express.json());
 
+// Serve public folder
 app.use(express.static(path.join(__dirname, "public")));
 
 const PORT = 3000;
