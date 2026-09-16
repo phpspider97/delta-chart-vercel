@@ -8,6 +8,7 @@ const CONFIG = {
 const SELECTED_SYMBOLS = [
     "BTCUSD",
     "ETHUSD",
+    "PAXUSD",
     "VVVUSD",
     "LITUSD",
     "TRBUSD",
