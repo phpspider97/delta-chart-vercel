@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>
+    Delta Mark Price Dashboard
+  </title>
+
+  <link
+    rel="stylesheet"
+    href="/style.css"
+  >
+
+</head>
+
+
+<body>
+
+
+  <!-- ======================================================
+       TOPBAR
+  ======================================================= -->
+
+  <header class="topbar">
+
+
+    <div class="title-section">
+
+      <h1>
+        Delta Mark Price
+      </h1>
+
+      <span
+        id="connectionStatus"
+        class="status disconnected"
+      >
+        Disconnected
+      </span>
+
+    </div>
+
+
+    <div class="controls">
+
+
+      <input
+        id="searchInput"
+        type="text"
+        placeholder="Search symbol / tag..."
+      >
+
+
+      <select id="categoryFilter">
+
+        <option value="all">
+          All Tags
+        </option>
+
+      </select>
+
+
+      <select id="chartLimit">
+
+        <option value="12">
+          12 Charts
+        </option>
+
+        <option value="24">
+          24 Charts
+        </option>
+
+        <option value="30">
+          30 Charts
+        </option>
+
+        <option value="60">
+          60 Charts
+        </option>
+
+        <option value="100">
+          100 Charts
+        </option>
+
+        <option value="all">
+          All
+        </option>
+
+      </select>
+
+
+      <select id="columnCount">
+
+        <option value="2">
+          2 Columns
+        </option>
+
+        <option value="3">
+          3 Columns
+        </option>
+
+        <option value="4" selected>
+          4 Columns
+        </option>
+
+        <option value="5">
+          5 Columns
+        </option>
+
+        <option value="6">
+          6 Columns
+        </option>
+
+        <option value="8">
+          8 Columns
+        </option>
+
+        <option value="10">
+          10 Columns
+        </option>
+
+      </select>
+
+
+      <select id="resolutionSelect">
+
+        <option value="3m">
+          3 Minute
+        </option>
+
+        <option value="30m">
+          30 Minute
+        </option>
+
+        <option value="1h">
+          1 Hour
+        </option>
+
+        <option value="4h">
+          4 Hour
+        </option>
+
+        <option value="1d">
+          1 Day
+        </option>
+
+      </select>
+
+
+      <select id="signalStrength">
+
+        <option value="2">
+          Swing 2
+        </option>
+
+        <option value="3">
+          Swing 3
+        </option>
+
+        <option value="4">
+          Swing 4
+        </option>
+
+        <option value="5">
+          Swing 5
+        </option>
+
+      </select>
+
+
+      <button id="reloadButton">
+        Reload
+      </button>
+
+
+    </div>
+
+  </header>
+
+
+  <!-- ======================================================
+       INFO BAR
+  ======================================================= -->
+
+  <div class="info-bar">
+
+
+    <span>
+      Mark Price
+    </span>
+
+
+    <span>
+      Timeframe:
+      <strong id="currentResolution">
+        3m
+      </strong>
+    </span>
+
+
+    <span>
+      Grid:
+      <strong>
+        IST
+      </strong>
+    </span>
+
+
+    <span>
+      Charts:
+      <strong id="chartCount">
+        0
+      </strong>
+    </span>
+
+
+    <span>
+      BUY:
+      <strong
+        id="buySignalCount"
+        class="buy-text"
+      >
+        0
+      </strong>
+    </span>
+
+
+    <span>
+      SELL:
+      <strong
+        id="sellSignalCount"
+        class="sell-text"
+      >
+        0
+      </strong>
+    </span>
+
+
+    <!-- <span>
+      Volume:
+      <strong>
+        N/A
+      </strong>
+    </span> -->
+
+
+  </div>
+
+
+  <!-- ======================================================
+       SIGNAL LEGEND
+  ======================================================= -->
+
+  <div class="signal-info">
+
+    <span class="legend-buy">
+      ▲ BUY = Higher Low + Break of Structure
+    </span>
+
+    <span class="legend-sell">
+      ▼ SELL = Lower High + Break of Structure
+    </span>
+
+  </div>
+
+
+  <!-- ======================================================
+       CHARTS
+  ======================================================= -->
+
+  <main
+    id="chartsContainer"
+    class="charts-container"
+  ></main>
+
+
+  <div
+    id="emptyState"
+    class="empty-state hidden"
+  >
+    No matching symbols found.
+  </div>
+
+
+  <script
+    src="https://unpkg.com/lightweight-charts@4.2.3/dist/lightweight-charts.standalone.production.js"
+  ></script>
+
+
+  <script src="/app.js"></script>
+
+
+</body>
+
+</html>
