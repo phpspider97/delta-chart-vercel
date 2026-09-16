@@ -233,21 +233,24 @@ function getSelectedSymbolSet() {
 }
 
 function getBaseProducts() {
-  if (state.displayMode === "all") {
-      return [...state.products];
-  }
+    const selected =
+        getSelectedSymbolSet();
 
-  const selected =
-      getSelectedSymbolSet();
+    if (state.displayMode === "all") {
+        return [...state.products];
+    }
 
-  return state.products.filter(product => {
-      const symbol =
-          String(product.symbol || "")
-              .trim()
-              .toUpperCase();
-
-      return selected.has(symbol);
-  });
+    return SELECTED_SYMBOLS
+        .map(symbol => {
+            return state.products.find(
+                product =>
+                    String(product.symbol || "")
+                        .trim()
+                        .toUpperCase() ===
+                    symbol.toUpperCase()
+            );
+        })
+        .filter(Boolean);
 }
 
 // ============================================================
