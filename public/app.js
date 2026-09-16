@@ -6,7 +6,9 @@ const CONFIG = {
 };
 
 const SELECTED_SYMBOLS = [
-  "VVVUSD",
+    "BTCUSD",
+    "ETHUSD",
+    "VVVUSD",
     "LITUSD",
     "TRBUSD",
     "AAVEUSD",
