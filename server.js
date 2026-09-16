@@ -252,10 +252,8 @@ async function getProducts() {
             });
         }
 
-        return result.slice(
-            0,
-            MAX_CHARTS
-        );
+        return result;
+        
     } catch (error) {
         console.error(
             "Failed to load products:"
