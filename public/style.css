@@ -362,6 +362,12 @@ body {
    RESPONSIVE
 ========================================================= */
 
+@media (max-width: 550px) {
+  .charts-container {
+      --chart-columns: 1;
+  }
+}
+
 @media (max-width: 1200px) {
 
   .charts-container {
