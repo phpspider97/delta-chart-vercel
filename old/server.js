@@ -1,12 +1,12 @@
 import express from "express";
 import axios from "axios";
 import { WebSocketServer, WebSocket } from "ws";
-  
+
 const app = express();
 
 import path from "path";
 import { fileURLToPath } from "url";
- 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -25,7 +25,7 @@ const DELTA_WS_URL =
 
 const DEFAULT_RESOLUTION = "1d";
 
-const HISTORICAL_CANDLES = 300;
+const HISTORICAL_CANDLES = 150;
 
 const MAX_CHARTS = 300;
 
@@ -883,18 +883,24 @@ function connectDeltaWebSocket() {
 // START HTTP SERVER
 // ============================================================
 
-let server = null;
+const server =
+    app.listen(
+        PORT,
+        async () => {
+            console.log(
+                `Dashboard running at http://localhost:${PORT}`
+            );
 
-if (process.env.VERCEL !== "1") {
-    server = app.listen(PORT, async () => {
-        console.log(`Dashboard running at http://localhost:${PORT}`);
-        products = await getProducts();
-        console.log(`Loaded ${products.length} products`);
-        connectDeltaWebSocket();
-    });
-}
+            products =
+                await getProducts();
 
-export default app;
+            console.log(
+                `Loaded ${products.length} products`
+            );
+
+            connectDeltaWebSocket();
+        }
+    );
 
 // ============================================================
 // BROWSER WEBSOCKET SERVER
@@ -904,11 +910,13 @@ export default app;
 // WebSocketServer({ server })
 // ============================================================
 
-const browserWSS = server
-    ? new WebSocketServer({ server, path: "/ws" })
-    : null;
+const browserWSS =
+    new WebSocketServer({
+        server,
+        path: "/ws"
+    });
 
-if (browserWSS) browserWSS.on(
+browserWSS.on(
     "connection",
     browserWS => {
         console.log(

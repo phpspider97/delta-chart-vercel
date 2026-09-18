@@ -867,26 +867,3 @@ select {
       max-width: 190px;
   }
 }
-
-
-/* EMA 50 / EMA 200 controls */
-.ema-toggles {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-}
-
-.ema-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    white-space: nowrap;
-}
-
-.ema-toggle input {
-    accent-color: #20b26b;
-    cursor: pointer;
-}

@@ -2,13 +2,16 @@ const CONFIG = {
   defaultChartLimit: 'all',
   defaultColumns: 4,
   resolution: "1d",
-  maxCandles: 300
+  maxCandles: 150
 };
 
 const SELECTED_SYMBOLS = [
     "BTCUSD",
+    "BCHUSD",
     "ETHUSD",
+    "ETCUSD",
     "PAXGUSD",
+    "SLVONUSD",
     "VVVUSD",
     "LITUSD",
     "TRBUSD",
@@ -19,17 +22,14 @@ const SELECTED_SYMBOLS = [
     "DASHUSD",
     "GRAMUSD",
     "TAOUSD",
-    "BCHUSD",
     "LTCUSD",
     "MUSD",
     "GIGGLEUSD",
-    "SLVONUSD",
     "SOLUSD",
     "DOTUSD",
     "KSMUSD",
     "LINKUSD",
     "HYPEUSD",
-    "ETCUSD",
     "INTCBUSD",
     "SOXLBUSD",
     "DRAMBUSD",
@@ -56,9 +56,7 @@ const state = {
   search: "",
   tag: "all",
   socket: null,
-  reconnectTimer: null,
-  showEMA50: true,
-  showEMA200: false
+  reconnectTimer: null
 };
 
 // ============================================================
@@ -97,7 +95,7 @@ const chartLimit =
 
 const columns =
   document.getElementById("columns");
- 
+
 const timeframe =
   document.getElementById("timeframe");
 
@@ -109,12 +107,6 @@ const currentTimeframe =
 
 const lastUpdate =
   document.getElementById("lastUpdate");
-
-const ema50Toggle =
-  document.getElementById("ema50Toggle");
-
-const ema200Toggle =
-  document.getElementById("ema200Toggle");
 
 // ============================================================
 // RESOLUTION
@@ -536,115 +528,6 @@ function renderCharts() {
 }
 
 // ============================================================
-// EMA 50 / EMA 200
-// ============================================================
-
-function calculateEMA(candles, period) {
-  if (!Array.isArray(candles) || candles.length < period) {
-      return [];
-  }
-
-  const multiplier = 2 / (period + 1);
-  const result = [];
-  let sum = 0;
-
-  // The candle array is already sorted. Only use finite closes.
-  for (let i = 0; i < period; i++) {
-      const close = Number(candles[i].close);
-      if (!Number.isFinite(close)) return [];
-      sum += close;
-  }
-
-  let ema = sum / period;
-  result.push({
-      time: Number(candles[period - 1].time),
-      value: ema
-  });
-
-  for (let i = period; i < candles.length; i++) {
-      const close = Number(candles[i].close);
-      const time = Number(candles[i].time);
-      if (!Number.isFinite(close) || !Number.isFinite(time)) continue;
-
-      ema = ((close - ema) * multiplier) + ema;
-      result.push({ time, value: ema });
-  }
-
-  return result;
-}
-
-function refreshEMAs(chartData) {
-  const ema50 = calculateEMA(chartData.candles, 50);
-  const ema200 = calculateEMA(chartData.candles, 200);
-
-  if (chartData.ema50Series) {
-      // Keep the EMA data loaded at all times. Use the series visibility
-      // option for show/hide instead of replacing the data with [].
-      chartData.ema50Series.setData(ema50);
-      chartData.ema50Series.applyOptions({
-          visible: state.showEMA50
-      });
-  }
-
-  if (chartData.ema200Series) {
-      chartData.ema200Series.setData(ema200);
-      chartData.ema200Series.applyOptions({
-          visible: state.showEMA200
-      });
-  }
-
-  // Detect the latest 50/200 crossover. The marker is attached to
-  // the candle where the relationship changed.
-  const markers = [];
-  const byTime50 = new Map(ema50.map(x => [x.time, x.value]));
-  const byTime200 = new Map(ema200.map(x => [x.time, x.value]));
-  const commonTimes = chartData.candles
-      .map(c => c.time)
-      .filter(t => byTime50.has(t) && byTime200.has(t));
-
-  for (let i = 1; i < commonTimes.length; i++) {
-      const prevTime = commonTimes[i - 1];
-      const time = commonTimes[i];
-      const prevDiff = byTime50.get(prevTime) - byTime200.get(prevTime);
-      const diff = byTime50.get(time) - byTime200.get(time);
-
-      if (prevDiff <= 0 && diff > 0) {
-          markers.push({
-              time,
-              position: 'belowBar',
-              color: '#20b26b',
-              //shape: 'arrowUp',
-              //text: '50/200 BULL'
-          });
-      } else if (prevDiff >= 0 && diff < 0) {
-          markers.push({
-              time,
-              position: 'aboveBar',
-              color: '#e05260',
-              //shape: 'arrowDown',
-              //text: '50/200 BEAR'
-          });
-      }
-  }
-
-  chartData.crossoverMarkers = markers.slice(-20);
-  chartData.candleSeries.setMarkers(
-      state.showEMA50 && state.showEMA200
-          ? chartData.crossoverMarkers
-          : []
-  );
-}
-
-function applyEMAVisibility() {
-  state.showEMA50 = Boolean(ema50Toggle?.checked);
-  state.showEMA200 = Boolean(ema200Toggle?.checked);
-
-  for (const chartData of state.charts.values()) {
-      refreshEMAs(chartData);
-  }
-}
-
-// ============================================================
 // CREATE CHART CARD
 // ============================================================
 
@@ -916,28 +799,6 @@ function createChartCard(product) {
           wickDownColor: "#e05260"
       });
 
-  const ema50Series = chart.addLineSeries({
-      color: "#f5c542",
-      lineWidth: 1,
-      lineVisible: true,
-      visible: true,
-      priceScaleId: "right",
-      priceLineVisible: false,
-      lastValueVisible: true,
-      //title: "EMA 50"
-  });
-
-  const ema200Series = chart.addLineSeries({
-      color: "#68b541",
-      lineWidth: 1,
-      lineVisible: true,
-      visible: true,
-      priceScaleId: "right",
-      priceLineVisible: false,
-      lastValueVisible: true,
-      //title: "EMA 200"
-  });
-
   const chartData = {
       symbol,
 
@@ -948,12 +809,6 @@ function createChartCard(product) {
       chart,
 
       candleSeries,
-
-      ema50Series,
-
-      ema200Series,
-
-      crossoverMarkers: [],
 
       candles: [],
 
@@ -1112,8 +967,6 @@ async function loadHistoricalCandles(
       chartData.candleSeries.setData(
           chartData.candles
       );
-
-      refreshEMAs(chartData);
 
       const last =
           chartData.candles[
@@ -1393,8 +1246,6 @@ function updateLiveCandle(message) {
       }
   }
 
-  refreshEMAs(chartData);
-
   updateCard(
       chartData,
       candle.close,
@@ -1415,47 +1266,75 @@ function connectWebSocket() {
       state.reconnectTimer = null;
   }
 
-  if (state.socket && (
-      state.socket.readyState === WebSocket.OPEN ||
-      state.socket.readyState === WebSocket.CONNECTING
-  )) {
+  if (state.socket &&
+      (state.socket.readyState === WebSocket.OPEN ||
+       state.socket.readyState === WebSocket.CONNECTING)) {
       return;
   }
 
-  const socket = new WebSocket(
-      "wss://public-socket.india.delta.exchange"
-  );
+  // IMPORTANT FOR VERCEL:
+  // Do NOT connect to /ws on the Vercel serverless function.
+  // Connect directly from the browser to Delta's public socket.
+  const DELTA_WS_URL =
+      "wss://public-socket.india.delta.exchange";
 
+  console.log("Connecting directly to Delta WebSocket...");
+
+  const socket = new WebSocket(DELTA_WS_URL);
   state.socket = socket;
-  setConnectionStatus(false);
-  connectionText.textContent = "CONNECTING";
 
   socket.addEventListener("open", () => {
+      console.log("Delta WebSocket CONNECTED");
       setConnectionStatus(true);
-      subscribeBrowserDelta();
+      subscribeDeltaCandles(socket);
   });
 
   socket.addEventListener("message", event => {
       try {
           const message = JSON.parse(event.data);
-          const type = String(message.type || "").toLowerCase();
 
-          if (type === `candlestick_${state.resolution}` || type === "candlestick") {
-              const data = message.data || message;
-              const symbol = String(data.sy || data.symbol || "")
-                  .replace(/^MARK:/i, "")
-                  .trim()
-                  .toUpperCase();
+          // Useful while debugging Vercel/Delta.  Do not remove.
+          if (message.type === "subscriptions" ||
+              message.type === "error" ||
+              message.success === false) {
+              console.log("Delta WS:", message);
+          }
 
+          if (String(message.type || "").startsWith("candlestick_")) {
+              const d = message.data || message;
+
+              const symbol = String(
+                  d.sy || d.symbol || message.sy || message.symbol || ""
+              ).replace(/^MARK:/i, "").trim().toUpperCase();
+
+              const timestamp = normalizeTimestamp(
+                  d.ts ?? d.timestamp ?? d.time ?? message.ts
+              );
+
+              const open = Number(d.o ?? d.open);
+              const high = Number(d.h ?? d.high);
+              const low = Number(d.l ?? d.low);
+              const close = Number(d.c ?? d.close);
+
+              if (!symbol || timestamp === null ||
+                  !Number.isFinite(open) ||
+                  !Number.isFinite(high) ||
+                  !Number.isFinite(low) ||
+                  !Number.isFinite(close)) {
+                  return;
+              }
+
+              // Convert Delta's microsecond timestamp to the chart's
+              // second timestamp and update the active candle.
               updateLiveCandle({
                   type: "mark_candle",
                   symbol,
-                  resolution: data.res || state.resolution,
-                  time: data.ts ?? data.time,
-                  open: data.o ?? data.open,
-                  high: data.h ?? data.high,
-                  low: data.l ?? data.low,
-                  close: data.c ?? data.close
+                  resolution: state.resolution,
+                  time: timestamp,
+                  open,
+                  high,
+                  low,
+                  close
               });
           }
       } catch (error) {
@@ -1464,38 +1343,58 @@ function connectWebSocket() {
   });
 
   socket.addEventListener("close", () => {
+      console.log("Delta WebSocket CLOSED");
       setConnectionStatus(false);
-      connectionText.textContent = "RECONNECTING";
+
       if (!state.reconnectTimer) {
           state.reconnectTimer = setTimeout(() => {
               state.reconnectTimer = null;
               connectWebSocket();
-          }, 2000);
+          }, 3000);
       }
   });
 
   socket.addEventListener("error", error => {
-      console.error("Delta public WebSocket error:", error);
+      console.error("Delta WebSocket ERROR:", error);
+      setConnectionStatus(false);
   });
 }
 
-function subscribeBrowserDelta() {
-  if (!state.socket || state.socket.readyState !== WebSocket.OPEN) return;
+function subscribeDeltaCandles(socket) {
+  if (!socket || socket.readyState !== WebSocket.OPEN) return;
 
-  const symbols = [...state.charts.keys()].map(symbol => `MARK:${symbol}`);
-  if (!symbols.length) return;
+  const symbols = [...new Set(
+      state.products
+          .map(p => String(p.symbol || "").trim().toUpperCase())
+          .filter(Boolean)
+  )];
 
-  state.socket.send(JSON.stringify({
+  if (!symbols.length) {
+      console.warn("No Delta symbols available for WebSocket");
+      return;
+  }
+
+  const channel = `candlestick_${state.resolution}`;
+
+  // We intentionally use MARK:<symbol> because this dashboard loads
+  // historical MARK candles from the REST endpoint.
+  const markSymbols = symbols.map(symbol => `MARK:${symbol}`);
+
+  const payload = {
       type: "subscribe",
       payload: {
           channels: [{
-              name: `candlestick_${state.resolution}`,
-              symbols
+              name: channel,
+              symbols: markSymbols
           }]
       }
-  }));
+  };
 
-  currentTimeframe.textContent = state.resolution;
+  console.log(
+      `Delta subscribe: ${channel} -> ${markSymbols.length} symbols`
+  );
+
+  socket.send(JSON.stringify(payload));
 }
 
 // ============================================================
@@ -1503,11 +1402,15 @@ function subscribeBrowserDelta() {
 // ============================================================
 
 function sendResolutionChange() {
-  if (state.socket && state.socket.readyState === WebSocket.OPEN) {
-      try { state.socket.close(); } catch (_) {}
-  }
-  state.socket = null;
   currentTimeframe.textContent = state.resolution;
+
+  // Delta candle channel is resolution-specific. Reconnect the direct
+  // browser socket so the new channel is subscribed cleanly.
+  if (state.socket) {
+      try { state.socket.close(); } catch {}
+      state.socket = null;
+  }
+
   connectWebSocket();
 }
 
@@ -1626,13 +1529,6 @@ timeframe.addEventListener(
       applyFilters();
   }
 );
-
-// ============================================================
-// EMA CONTROLS
-// ============================================================
-
-ema50Toggle?.addEventListener("change", applyEMAVisibility);
-ema200Toggle?.addEventListener("change", applyEMAVisibility);
 
 // ============================================================
 // INITIALIZE
