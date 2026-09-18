@@ -28,7 +28,7 @@ const DEFAULT_RESOLUTION = "1d";
 const HISTORICAL_CANDLES = 300;
 
 const MAX_CHARTS = 300;
-
+ 
 let currentResolution =
     DEFAULT_RESOLUTION;
 
