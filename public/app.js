@@ -59,8 +59,8 @@ const state = {
   tag: "all",
   socket: null,
   reconnectTimer: null,
-  showEMA50: true,
-  showEMA200: true
+  showEMA50: false,
+  showEMA200: false
 };
 
 // ============================================================
