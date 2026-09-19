@@ -42,7 +42,9 @@ const SELECTED_SYMBOLS = [
     "HOODBUSD",
     "COINXUSD",
     "PLTRBUSD",
-    "RKLBBUSD"
+    "RKLBBUSD",
+    "LINKUSD",
+    "AVAXUSD"
 ];
 
 const state = {
@@ -58,7 +60,7 @@ const state = {
   socket: null,
   reconnectTimer: null,
   showEMA50: true,
-  showEMA200: false
+  showEMA200: true
 };
 
 // ============================================================
