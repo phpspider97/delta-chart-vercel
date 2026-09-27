@@ -1,6 +1,6 @@
 const CONFIG = {
   defaultChartLimit: 'all',
-  defaultColumns: 4,
+  defaultColumns: 3,
   resolution: "1d",
   maxCandles: 300
 };
