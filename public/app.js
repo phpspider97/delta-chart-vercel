@@ -939,7 +939,46 @@ function createChartCard(product) {
       lastValueVisible: true,
       //title: "EMA 200"
   });
+   
+    chart.subscribeClick((param) => {
+        if (!param.point) return;
 
+        const price = candleSeries.coordinateToPrice(param.point.y);
+
+        if (price == null) return;
+
+        const copiedPrice = Number(price).toFixed(2);
+
+        navigator.clipboard.writeText(copiedPrice);
+
+        showCopiedMessage(copiedPrice);
+    });
+
+    function showCopiedMessage(price) {
+        let message = document.getElementById("copy-price-message");
+
+        if (!message) {
+            message = document.createElement("div");
+            message.id = "copy-price-message";
+
+            message.style.position = "fixed";
+            message.style.bottom = "20px";
+            message.style.left = "20px";
+            message.style.padding = "8px 14px";
+            message.style.background = "#20b26b";
+            message.style.color = "#fff";
+            message.style.borderRadius = "6px";
+            message.style.zIndex = "9999";
+
+            document.body.appendChild(message);
+        }
+
+        message.textContent = `Price copied: ${price}`;
+
+        setTimeout(() => {
+            message.remove();
+        }, 1500);
+    }
   const chartData = {
       symbol,
 
