@@ -709,7 +709,7 @@ function createChartCard(product) {
               </div>
 
               <div class="symbol-subtitle">
-                  MARK PRICE
+                  Delta Chart
               </div>
 
               <div class="product-tags">
