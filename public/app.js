@@ -947,7 +947,7 @@ function createChartCard(product) {
 
         if (price == null) return;
 
-        const copiedPrice = Number(price).toFixed(2);
+        const copiedPrice = Number(price);
 
         navigator.clipboard.writeText(copiedPrice);
 
