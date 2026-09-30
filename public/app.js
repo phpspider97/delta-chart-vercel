@@ -848,7 +848,7 @@ function createChartCard(product) {
               width:
                   chartElement.clientWidth,
 
-              height: 400,
+              height: 300,
 
               layout: {
                   background: {

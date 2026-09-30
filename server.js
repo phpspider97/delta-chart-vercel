@@ -320,7 +320,7 @@ async function candleHandler(
                 req.params.symbol ||
                 req.query.symbol ||
                 ""
-            )
+            ) 
                 .trim()
                 .toUpperCase();
 
