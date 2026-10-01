@@ -248,10 +248,25 @@ function getBaseProducts() {
 
     if (state.displayMode === "all") {
         return [...state.products].sort((a, b) => {
-            const symbolA = String(a.symbol || "").trim().toUpperCase();
-            const symbolB = String(b.symbol || "").trim().toUpperCase();
+            // const symbolA = String(a.symbol || "").trim().toUpperCase();
+            // const symbolB = String(b.symbol || "").trim().toUpperCase();
+            // return symbolA.localeCompare(symbolB);
 
-            return symbolA.localeCompare(symbolB);
+            const changeA = Number(
+                a.price_change_24h ??
+                a.change_24h ??
+                a.priceChange24h ??
+                0
+            );
+
+            const changeB = Number(
+                b.price_change_24h ??
+                b.change_24h ??
+                b.priceChange24h ??
+                0
+            );
+
+            return changeA - changeB;
         });
     }
 
