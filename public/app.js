@@ -248,24 +248,17 @@ function getBaseProducts() {
 
     if (state.displayMode === "all") {
         return [...state.products].sort((a, b) => {
+            //console.log(a.change24)
             // const symbolA = String(a.symbol || "").trim().toUpperCase();
             // const symbolB = String(b.symbol || "").trim().toUpperCase();
             // return symbolA.localeCompare(symbolB);
 
-            const changeA = Number(
-                a.price_change_24h ??
-                a.change_24h ??
-                a.priceChange24h ??
-                0
+            const changeA = Number( 
+                a.change24 ?? 0
             );
-
-            const changeB = Number(
-                b.price_change_24h ??
-                b.change_24h ??
-                b.priceChange24h ??
-                0
+            const changeB = Number( 
+                b.change24 ?? 0
             );
-
             return changeA - changeB;
         });
     }
@@ -672,6 +665,7 @@ function applyEMAVisibility() {
 // ============================================================
 
 function createChartCard(product,count) {
+    //console.log(product.change24)
   const symbol =
       String(product.symbol || "")
           .trim()
@@ -1224,7 +1218,7 @@ function updateCard(
   if (!Number.isFinite(value)) {
       return;
   }
-
+  //console.log('chartData : ', chartData.product.change24)
   chartData.priceElement.textContent =
       formatPrice(value);
 
@@ -1244,16 +1238,16 @@ function updateCard(
       if (
           Number.isFinite(previous) &&
           previous !== 0
-      ) {
-          const change =
-              (
-                  (
-                      value -
-                      previous
-                  ) /
-                  previous
-              ) * 100;
-
+      ) {     
+        //chartData.product.change24
+          const change = chartData.product.change24
+            //   (
+            //       (
+            //           value -
+            //           previous
+            //       ) /
+            //       previous
+            //   ) * 100; 
           const sign =
               change >= 0
                   ? "+"

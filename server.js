@@ -159,17 +159,17 @@ async function getProducts() {
 
         const response =
             await axios.get(
-                `${DELTA_REST_URL}/v2/products`,
+                `${DELTA_REST_URL}/v2/tickers?contract_types=perpetual_futures`,
                 {
                     timeout: 15000
                 }
             );
-
+                //console.log(response.data)
         const list =
             response.data?.result ||
             response.data?.products ||
             [];
-
+        //console.log(list[1])
         const result = [];
 
         const symbols = new Set();
@@ -226,7 +226,7 @@ async function getProducts() {
             }
 
             symbols.add(symbol);
-
+            //console.log(product)
             result.push({
                 symbol,
                 productId: product.id,
@@ -247,8 +247,8 @@ async function getProducts() {
                     product.tag ||
                     "",
 
-                tags:
-                    getProductTags(product)
+                tags: getProductTags(product),
+                change24 : Number(product.ltp_change_24h)    
             });
         }
 
@@ -366,9 +366,9 @@ async function candleHandler(
         const markSymbol =
             `MARK:${symbol}`;
 
-        console.log(
-            `CANDLES ${markSymbol} ${resolution}`
-        );
+        // console.log(
+        //     `CANDLES ${markSymbol} ${resolution}`
+        // );
 
         const response =
             await axios.get(
