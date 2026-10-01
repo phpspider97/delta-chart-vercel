@@ -59,7 +59,7 @@ const state = {
   tag: "all",
   socket: null,
   reconnectTimer: null,
-  showEMA50: false,
+  showEMA50: true,
   showEMA200: false
 };
 
@@ -848,7 +848,7 @@ function createChartCard(product) {
               width:
                   chartElement.clientWidth,
 
-              height: 300,
+              height: 550,
 
               layout: {
                   background: {
