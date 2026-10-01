@@ -247,7 +247,12 @@ function getBaseProducts() {
         getSelectedSymbolSet();
 
     if (state.displayMode === "all") {
-        return [...state.products];
+        return [...state.products].sort((a, b) => {
+            const symbolA = String(a.symbol || "").trim().toUpperCase();
+            const symbolB = String(b.symbol || "").trim().toUpperCase();
+
+            return symbolA.localeCompare(symbolB);
+        });
     }
 
     return SELECTED_SYMBOLS
