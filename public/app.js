@@ -528,12 +528,13 @@ function renderCharts() {
 
   visibleCount.textContent =
       state.filteredProducts.length;
-
+  let count = 0
   for (
       const product
       of state.filteredProducts
   ) {
-      createChartCard(product);
+        count++
+      createChartCard(product,count);
   }
 }
 
@@ -650,7 +651,7 @@ function applyEMAVisibility() {
 // CREATE CHART CARD
 // ============================================================
 
-function createChartCard(product) {
+function createChartCard(product,count) {
   const symbol =
       String(product.symbol || "")
           .trim()
@@ -699,7 +700,7 @@ function createChartCard(product) {
               <div class="symbol-row">
 
                   <span class="symbol-name">
-                      ${escapeHtml(symbol)}
+                      ${count}. ${escapeHtml(symbol)}
                   </span>
 
                   <span class="live-badge">
