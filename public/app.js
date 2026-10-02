@@ -863,7 +863,7 @@ function createChartCard(product,count) {
               width:
                   chartElement.clientWidth,
 
-              height: 550,
+              height: 400,
 
               layout: {
                   background: {
