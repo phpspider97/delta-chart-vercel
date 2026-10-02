@@ -734,7 +734,7 @@ function createChartCard(product,count) {
               </div>
 
               <div class="symbol-subtitle">
-                  Volume : ${product.turnoverUsd} | OI : ${product.oiUsd}
+                  Volume : ${(product.volume)} | OI : ${(product.oi)}
               </div>
 
               <div class="product-tags">
