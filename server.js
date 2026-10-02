@@ -248,7 +248,9 @@ async function getProducts() {
                     "",
 
                 tags: getProductTags(product),
-                change24 : Number(product.ltp_change_24h)    
+                change24 : Number(product.ltp_change_24h), 
+                volume : Number(product.turnoverUsd),    
+                oi : Number(product.oiUsd)    
             });
         }
 
