@@ -701,6 +701,16 @@ function createChartCard(product,count) {
   // CARD
   // ========================================================
 
+    function formatMoney(value) {
+        if (!Number.isFinite(value)) return "-";
+
+        if (value >= 1e9) return "$" + (value / 1e9).toFixed(2) + "B";
+        if (value >= 1e6) return "$" + (value / 1e6).toFixed(2) + "M";
+        if (value >= 1e3) return "$" + (value / 1e3).toFixed(2) + "K";
+
+        return "$" + value.toFixed(0);
+    }
+    
   const card =
       document.createElement("article");
 
@@ -724,7 +734,7 @@ function createChartCard(product,count) {
               </div>
 
               <div class="symbol-subtitle">
-                  Volume : ${product.turnoverUsd} | OI : ${product.oiUsd}
+                  Volume : ${formatMoney(product.turnoverUsd)} | OI : ${formatMoney(product.oiUsd)}
               </div>
 
               <div class="product-tags">

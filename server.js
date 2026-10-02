@@ -169,7 +169,7 @@ async function getProducts() {
             response.data?.result ||
             response.data?.products ||
             [];
-        //console.log(list[1])
+        console.log(list[1])
         const result = [];
 
         const symbols = new Set();
@@ -249,8 +249,8 @@ async function getProducts() {
 
                 tags: getProductTags(product),
                 change24 : Number(product.ltp_change_24h), 
-                volume : Number(product.turnoverUsd),    
-                oi : Number(product.oiUsd)    
+                volume : Number(product.turnover_usd),    
+                oi : Number(product.oi_value_usd)    
             });
         }
 
