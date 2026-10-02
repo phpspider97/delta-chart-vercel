@@ -890,3 +890,15 @@ select {
     accent-color: #20b26b;
     cursor: pointer;
 }
+
+.symbol-subtitle-update {
+  padding: 8px 3px;
+  margin-top: 5px;
+  border-radius: 3px;
+  background: #10251c;
+  border: 1px solid #1a4a35;
+  color: #e4f0ea;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+}

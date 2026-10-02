@@ -733,7 +733,7 @@ function createChartCard(product,count) {
 
               </div>
 
-              <div class="symbol-subtitle live-badge">
+              <div class="symbol-subtitle-update">
                   Volume : ${formatMoney(product.volume)} | OI : ${formatMoney(product.oi)}
               </div>
 
