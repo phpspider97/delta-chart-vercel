@@ -710,7 +710,7 @@ function createChartCard(product,count) {
 
         return "$" + value.toFixed(0);
     }
-    
+
   const card =
       document.createElement("article");
 
@@ -734,7 +734,7 @@ function createChartCard(product,count) {
               </div>
 
               <div class="symbol-subtitle">
-                  Volume : ${formatMoney(product.turnoverUsd)} | OI : ${formatMoney(product.oiUsd)}
+                  Volume : ${product.turnoverUsd} | OI : ${product.oiUsd}
               </div>
 
               <div class="product-tags">

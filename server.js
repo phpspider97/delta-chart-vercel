@@ -169,7 +169,7 @@ async function getProducts() {
             response.data?.result ||
             response.data?.products ||
             [];
-        console.log(list[1])
+        //console.log(list[1])
         const result = [];
 
         const symbols = new Set();
